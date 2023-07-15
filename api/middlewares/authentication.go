@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/turgaysozen/littlejohn/dummy_data"
+	logger "github.com/turgaysozen/littlejohn/utils"
 )
 
 func AuthenticationMiddleware(next http.Handler) http.Handler {
@@ -47,6 +48,7 @@ func AuthenticationMiddleware(next http.Handler) http.Handler {
 func isValidToken(token string) bool {
 	decodedToken, err := base64.StdEncoding.DecodeString(token)
 	if err != nil {
+		logger.Error.Println("An error occurred while decoding user authentication, err:", err)
 		return false
 	}
 
@@ -56,9 +58,11 @@ func isValidToken(token string) bool {
 	// Check if the username is present in the list of valid usernames
 	for _, validUsername := range dummy_data.ValidUsernames {
 		if username == validUsername {
+			logger.Info.Println("User:", username, "successfully authenticated")
 			return true
 		}
 	}
 
+	logger.Error.Println("User:", username, "cannot authenticate")
 	return false
 }

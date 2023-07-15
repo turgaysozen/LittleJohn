@@ -7,6 +7,7 @@ import (
 	"github.com/turgaysozen/littlejohn/api/models"
 	"github.com/turgaysozen/littlejohn/dto"
 	"github.com/turgaysozen/littlejohn/dummy_data"
+	logger "github.com/turgaysozen/littlejohn/utils"
 )
 
 var generatedStocks = make(map[string][]models.Stock)
@@ -39,6 +40,7 @@ func generateStocks() {
 			}
 		}
 
+		logger.Info.Println("Stocks are generated as initial for user:", username)
 		generatedStocks[username] = userStocks
 	}
 }
@@ -46,6 +48,7 @@ func generateStocks() {
 func GetPortfolioByUsername(username string) dto.Portfolio {
 	stocks, found := generatedStocks[username]
 	if !found {
+		logger.Error.Println("Portfolio cannot find for user:", username)
 		return dto.Portfolio{
 			User:   username,
 			Stocks: []dto.Stock{},
@@ -80,6 +83,7 @@ func GetStockHistoryBySymbol(symbol string, page, pageSize int) (dto.StockHistor
 	// Retrieve the stock by symbol from the dummy data
 	stock := GetStockBySymbol(symbol)
 	if stock == nil {
+		logger.Error.Println("Stock history cannot find for symbol:", symbol)
 		return dto.StockHistory{
 			Symbol:   symbol,
 			Prices:   []dto.Price{},
