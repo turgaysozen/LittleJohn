@@ -33,8 +33,7 @@ func AuthenticationMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		username := string(usernameBytes)
-		username = strings.TrimSuffix(username, ":")
+		username := strings.TrimSuffix(string(usernameBytes), ":")
 		ctx := context.WithValue(r.Context(), "username", username)
 
 		// Replace the original request context with the new context
@@ -52,8 +51,7 @@ func isValidToken(token string) bool {
 	}
 
 	// Convert the decoded token to a string
-	username := string(decodedToken)
-	username = strings.TrimSuffix(username, ":")
+	username := strings.TrimSuffix(string(decodedToken), ":")
 
 	// Check if the username is present in the list of valid usernames
 	for _, validUsername := range dummy_data.ValidUsernames {
