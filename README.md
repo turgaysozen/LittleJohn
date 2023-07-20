@@ -1,4 +1,4 @@
-# LittleJohn HTTP API
+# Stock-Portfolio Management API
 LittleJohn is a fictitious brokerage service API that allows users to manage and view their stock portfolios. This README provides an overview of the project and instructions for running it.
 
 ## Project Overview
